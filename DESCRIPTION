@@ -1,0 +1,18 @@
+Package: ShinyGBIF
+Type: Package
+Title: A Shiny App Dashboard For GBIF Observations
+Version: 0.1.0
+Authors@R: c(
+    person("Leonardo", "Kamogawa", email = "leonardo.kamogawa@hotmail.com", role = c("aut", "cre"))
+  )
+Description: This Shiny app was developed as part of a home assignment for an R Shiny Developer
+    role at Appsilon.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends : R (>= 4.5)
+Imports: 
+    bslib,
+    echarts4r,
+    leaflet,
+    shiny
