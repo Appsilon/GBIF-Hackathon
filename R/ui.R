@@ -1,8 +1,13 @@
 ui <- function() {
   bslib::page_navbar(
-    title = shiny::a(
-      shiny::img(src = "dir/img/kamogawa_hanko.png", width = "48px"),
-      href = "https://github.com/LKamogawa"
+    title = shiny::tagList(
+      shiny::a(
+        id = "title-logo",
+        shiny::img(src = "dir/img/kamogawa_hanko.png", width = "48px"),
+        href = "https://github.com/LKamogawa"
+      ),
+      shiny::span("GBIF Dashboard"),
+      info_ui()
     ),
     window_title = "GBIF Observations Dashboard",
     fillable = FALSE,
@@ -11,6 +16,6 @@ ui <- function() {
         shiny::tags$link(rel = "stylesheet", type = "text/css", href = "dir/css/styles.css")
       )
     ),
-    footer = footer_ui()
+    footer = footer_ui(),
   )
 }

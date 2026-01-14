@@ -16,3 +16,16 @@
 #footer-right {
   float: right;
 }
+
+#title-logo {
+  border-right: 1px solid #c5c8ca;
+  padding: 0 10px;
+  text-decoration: none;
+}
+
+.navbar-brand {
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
