@@ -19,3 +19,12 @@ mit_license_text <- shiny::tagList(
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
   )
 )
+
+info_text <- shiny::tagList(
+  shiny::p(
+    "This Shiny dashboard was developed as part of a home assignment for an R Shiny Developer role
+    at Appsilon. The data provided is from",
+    shiny::a("GBIF (Global Biodiversity Information Facility).", href = "https://www.gbif.org/")
+  ),
+  shiny::h5("Write later when the app is done!")
+)
