@@ -4,12 +4,12 @@ footer_ui <- function(id = "footer") {
   shiny::div(
     id = "footer",
     shiny::span(
-      id = "footer-left",
+      style = "float: left;",
       "Made with 💙 by ",
       shiny::a("Leonardo Kamogawa", href = "https://github.com/LKamogawa")
     ),
     shiny::span(
-      id = "footer-right",
+      style = "float: right;",
       "This dashboard is licensed under ",
       shiny::actionLink(ns("modal"), "MIT License")
     )
