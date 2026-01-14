@@ -27,34 +27,8 @@ multimedia_poland <- read_csv_chunked(
   callback = DataFrameCallback$new(multimedia_filter)
 )
 
-# Then, I selected the columns that I want to use in the dashboard.
-occurence_poland <-
-  occurence_poland |>
-  select(
-    id,
-    URL = occurenceID,
-    scientificName,
-    vernacularName,
-    kingdom,
-    family,
-    individualCount,
-    lifeStage,
-    sex,
-    longitudeDecimal,
-    latitudeDecimal,
-    continent,
-    country,
-    locality,
-    eventDate,
-    eventTime
-  )
-
-multimedia_poland <-
-  multimedia_poland |>
-  select(CoreId, image_url = accessURI, creator, rightsHolder, license)
-
 # Finally, transform the data frames to .rda files to call in the app.
-usethis::use_data(occurence_poland)
-usethis::use_data(multimedia_poland)
+usethis::use_data(occurence_poland, overwrite = TRUE)
+usethis::use_data(multimedia_poland, overwrite = TRUE)
 
 
