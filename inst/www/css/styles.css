@@ -1,0 +1,18 @@
+#footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+  z-index: 1000;
+  border-top: 1px solid #000;
+}
+
+#footer-left {
+  float: left;
+}
+
+#footer-right {
+  float: right;
+}
