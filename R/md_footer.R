@@ -1,4 +1,4 @@
-footer_ui <- function(id = "footer") {
+md.footer_ui <- function(id = "footer") {
   ns <- shiny::NS(id)
 
   shiny::div(
@@ -16,7 +16,7 @@ footer_ui <- function(id = "footer") {
   )
 }
 
-footer_server <- function(id = "footer") {
+md.footer_server <- function(id = "footer") {
   shiny::moduleServer(id, function(input, output, session) {
     shiny::observe({
       shiny::showModal(shiny::modalDialog(

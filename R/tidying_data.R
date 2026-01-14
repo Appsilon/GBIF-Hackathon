@@ -1,4 +1,4 @@
-tidy_occurrence <- function(data) {
+tidy.occurrence <- function(data) {
   data |>
     dplyr::mutate(
       id = clean_id(id),
@@ -29,7 +29,7 @@ tidy_occurrence <- function(data) {
 #   multimedia_poland |>
 #   dplyr::select(CoreId, image_url = accessURI, creator, rightsHolder, license)
 
-tidy_multimedia <- function(data) {
+tidy.multimedia <- function(data) {
   data |>
     dplyr::mutate(
       id = clean_id(CoreId),

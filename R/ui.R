@@ -35,7 +35,7 @@ ui <- function() {
   )
 
   bslib::page_navbar(
-    title = shiny::tagList(title, info_ui()),
+    title = shiny::tagList(title, md.info_ui()),
     window_title = "GBIF Observations Dashboard",
     fillable = TRUE,
     header = shiny::tagList(
@@ -43,7 +43,7 @@ ui <- function() {
         shiny::tags$link(rel = "stylesheet", type = "text/css", href = "dir/css/styles.css")
       )
     ),
-    footer = footer_ui(),
+    footer = md.footer_ui(),
     bslib::nav_spacer(),
     nav_items,
     body_layout
