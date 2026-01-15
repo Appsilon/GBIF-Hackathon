@@ -44,7 +44,9 @@ ui <- function() {
       ),
       row_heights = c(1, 2, 3),
       style = "overflow: auto;",
-      bslib::card(), bslib::card(), bslib::card(),
+      md.valuebox_ui("observations", "Total of observations (Estimated)", "binoculars-fill"),
+      md.valuebox_ui("sex", "Sex distribution", "gender-ambiguous"),
+      md.valuebox_ui("info", "Trivia", "diagram-3-fill"),
       md.ranking_ui("life_stage", "Life stage ranking"),
       md.ranking_ui("country", "Country ranking"),
       md.timeline_ui()

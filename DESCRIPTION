@@ -12,6 +12,7 @@ Encoding: UTF-8
 LazyData: true
 Depends: R (>= 4.5)
 Imports: 
+    bsicons,
     bslib,
     dplyr,
     echarts4r,

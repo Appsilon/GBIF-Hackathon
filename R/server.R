@@ -44,8 +44,11 @@ server <- function(input, output, session) {
     shiny::bindCache(rc.name(), rc.continents(), rc.countries())
 
   md.info_server()
-  md.ranking_server(id = "life_stage", rc.data = rc.data)
-  md.ranking_server(id = "country", rc.data = rc.data, n = 7)
+  md.valuebox_server("observations", rc.data = rc.data, .by = NULL)
+  md.valuebox_server("sex", rc.data = rc.data, .by = "sex")
+  md.valuebox_server("info", rc.data = rc.data, .by = NULL)
+  md.ranking_server("life_stage", rc.data = rc.data)
+  md.ranking_server("country", rc.data = rc.data, n = 7)
   md.timeline_server(rc.data = rc.data)
   md.footer_server()
 

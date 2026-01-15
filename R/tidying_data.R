@@ -75,3 +75,10 @@ tidy.ranking <- function(data, .by, n = 4) {
     dplyr::rename_with(\(name) stringr::str_replace(name, "_", " ")) |>
     dplyr::rename_with(stringr::str_to_sentence)
 }
+
+tidy.valuebox <- function(data, .by) {
+  data |>
+    dplyr::summarise(Observations = sum(individual_count, na.rm = FALSE), .by = .by) |>
+    dplyr::arrange(Observations) |>
+    dplyr::rename_with(stringr::str_to_sentence)
+}
