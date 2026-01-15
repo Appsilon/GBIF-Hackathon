@@ -25,10 +25,6 @@ tidy.occurrence <- function(data) {
      )
 }
 
-# multimedia_poland <-
-#   multimedia_poland |>
-#   dplyr::select(CoreId, image_url = accessURI, creator, rightsHolder, license)
-
 tidy.multimedia <- function(data) {
   data |>
     dplyr::mutate(

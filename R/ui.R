@@ -10,27 +10,44 @@ ui <- function() {
   )
 
   nav_items <- bslib::nav_item(
-    bslib::nav_item("1"),
-    bslib::nav_item("2"),
-    bslib::nav_item("3"),
-    bslib::nav_item("4")
+    md.select_input_ui(
+      "name",
+      label = "Species Name",
+      searchPlaceholderText = "Enter a vernacular or scientific name…",
+      multiple = FALSE,
+      width = "500px"
+    ),
+    md.select_input_ui(
+      "continent",
+      label = "Continents",
+      searchPlaceholderText = "Enter a continent name…",
+      multiple = TRUE,
+      width = "250px"
+    ),
+    md.select_input_ui(
+      "country",
+      label = "Countries",
+      searchPlaceholderText = "Enter a country name…",
+      multiple = TRUE,
+      width = "250px"
+    )
   )
 
   body_layout <- bslib::layout_columns(
     col_widths = c(7, 5),
     style = "margin: 15px;",
-      bslib::layout_columns(
-        col_widths = c(
-          4, 4, 4,
-          6, 6,
-          12
-        ),
-        row_heights = c(1, 2, 2),
-        style = "overflow: auto;",
-        bslib::card(), bslib::card(), bslib::card(),
-        bslib::card(), bslib::card(),
-        bslib::card()
+    bslib::layout_columns(
+      col_widths = c(
+        4, 4, 4,
+        6, 6,
+        12
       ),
+      row_heights = c(1, 2, 2),
+      style = "overflow: auto;",
+      bslib::card(), bslib::card(), bslib::card(),
+      bslib::card(), bslib::card(),
+      bslib::card()
+    ),
     bslib::card()
   )
 
