@@ -37,41 +37,42 @@ plot.ranking <- function(data) {
     echarts4r::e_grid(left = 100)
 }
 
-plt.leaflet <- function(pal) {
-  leaflet::leaflet() |>
-    leaflet::setView(lng = 19.8339408685461, lat = 49.3105052885285, zoom = 5) |>
-    leaflet::addProviderTiles(providers$CartoDB.Positron)
+plt.maplibre <- function() {
+  # Made with the help of Claude Sonnet 4.5
+  mapgl::maplibre(
+    style = mapgl::maptiler_style("openstreetmap", api_key = "xbKHifJb13l0cMLRyQUG"),# My API just for this
+    center = c(19.8339408685461, 49.3105052885285),
+    zoom = 5,
+    maxZoom = 12
+  )
 }
 
-plt.leaflet_markers <- function(map, data) {
-  map |>
-    leaflet::addCircleMarkers(
-      data = data,
-      lng = ~long,
-      lat = ~lat,
-      popup = ~paste(
-        "<div style='font-size: 18px; font-weight: bold; color: #c46479; margin-bottom: 10px;'>", name, "</div>",
-        "<div style='display: flex; align-items: flex-start;'>",
-        "<div style='flex: 1; padding-right: 10px;'>",
-        "<b>Date:</b> ", event_date, "<br>",
-        "<b>Time:</b> ", event_time, "<br>",
-        "<b>Observations:</b> ", individual_count, "<br>",
-        "<b>Life stage:</b> ", life_stage, "<br>",
-        "<b>Sex:</b> ", sex, "<br>",
-        "<b>Locality:</b> ", locality, "<br>",
-        "<b>Coordinates:</b> ", long, lat,
-        "</div>",
-        "</div>"
-      ),
-      fillColor = "#4C9C2E",
-      fillOpacity = 1,
-      stroke = FALSE,
-      options = leaflet::markerOptions(
-        riseOnHover = TRUE,
-        individual_count = ~individual_count
-      )
-      # clusterOptions = leaflet::markerClusterOptions(
-      #   iconCreateFunction = fx.custom_marker_clustering_js
-      #   )
+plt.map_with_heatmap <- function(base_map, observations_sf) {
+  # Made with the help of Claude Sonnet 4.5
+  base_map |>
+  mapgl::add_heatmap_layer(
+    id = "observation_heatmap",
+    source = observations_sf,
+    heatmap_radius = 15,
+    heatmap_color = mapgl::interpolate(
+      property = "heatmap-density",
+      values = seq(0, 1, 0.2),
+      stops = c("transparent", viridisLite::viridis(5))
+    ),
+    heatmap_opacity = mapgl::interpolate(
+      property = "zoom",
+      values = c(8, 11),
+      stops = c(1, 0)
     )
+  ) |>
+    mapgl::add_circle_layer(
+    id = "observation_circles",
+    source = observations_sf,
+    circle_color = "#4C9C2E",
+    circle_stroke_color = "white",
+    circle_stroke_width = 2,
+    circle_radius = 8,
+    min_zoom = 9.5,
+    popup = "popup_content"
+  )
 }

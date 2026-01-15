@@ -82,3 +82,105 @@ tidy.valuebox <- function(data, .by) {
     dplyr::arrange(Observations) |>
     dplyr::rename_with(stringr::str_to_sentence)
 }
+
+tidy.coords_sf <- function(data) {
+  # Made with the help of Claude Sonnet 4.5
+  data |>
+    sf::st_as_sf(coords = c("long", "lat"), crs = 4326) %>%
+    sf::st_jitter(factor = 0.0001)
+}
+
+tidy.map_popup <- function(data) {
+  # Made with the help of Claude Sonnet 4.5
+  data |>
+    dplyr::mutate(
+      # Create unique ID for each row BEFORE glue
+      popup_id = dplyr::row_number(),
+      images_processed = dplyr::case_when(
+        is.na(images) | trimws(as.character(images)) == "" ~ "dir/img/gbif-mark-green-logo.png",
+        .default = as.character(images)
+      )
+    ) |>
+    dplyr::rowwise() |>
+    dplyr::mutate(
+      # Split images into list
+      image_list = list(trimws(unlist(strsplit(images_processed, ",")))),
+      # Generate image HTML
+      images_html = paste(
+        sapply(seq_along(image_list), function(i) {
+          sprintf(
+            '<img src="%s" style="width: 100%%; height: 100%%; object-fit: cover; position: absolute; top: 0; left: 0; opacity: %s; transition: opacity 0.5s ease-in-out;">',
+            image_list[i],
+            if(i == 1) "1" else "0"
+          )
+        }),
+        collapse = ""
+      )
+    ) |>
+    dplyr::mutate(popup_content = glue::glue('
+    <div style="font-family: \'Open Sans\', sans-serif; max-width: 600px; padding: 12px; background-color: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+      <h3 style="color: #4C9C2E; margin-top: 0; font-size: 18px; font-weight: bold; margin-bottom: 12px;">{name}</h3>
+      <div style="display: flex; gap: 15px;">
+        <div style="flex: 1; color: #495057; line-height: 1.6;">
+          <p style="margin: 0;">
+            <strong>Date:</strong> {event_date}<br>
+            <strong>Time:</strong> {event_time}<br>
+            <strong>Observations:</strong> {individual_count}<br>
+            <strong>Life stage:</strong> {life_stage}<br>
+            <strong>Sex:</strong> {sex}<br>
+            <strong>Locality:</strong> {locality}
+          </p>
+        </div>
+        <div style="flex: 0 0 250px; position: relative;">
+          <div class="carousel-{popup_id}" style="width: 250px; height: 200px; position: relative; overflow: hidden; border-radius: 6px; background: #e9ecef;">
+            {images_html}
+          </div>
+          <button onclick="changeSlide_{popup_id}(-1)" style="position: absolute; left: 5px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.8); border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; z-index: 10;">&lt;</button>
+          <button onclick="changeSlide_{popup_id}(1)" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.8); border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; z-index: 10;">&gt;</button>
+          <div style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 10;" class="dots-{popup_id}">
+          </div>
+        </div>
+      </div>
+      <script>
+        (function() {{
+          let currentSlide_{popup_id} = 0;
+          const carousel = document.querySelector(\'.carousel-{popup_id}\');
+          if (!carousel) return;
+
+          const slides = carousel.querySelectorAll(\'img\');
+          const dotsContainer = document.querySelector(\'.dots-{popup_id}\');
+
+          if (slides.length === 0) return;
+
+          // Create dots
+          slides.forEach((_, index) => {{
+            const dot = document.createElement(\'span\');
+            dot.style.cssText = \'width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: background 0.3s;\';
+            dot.onclick = () => showSlide_{popup_id}(index);
+            dotsContainer.appendChild(dot);
+          }});
+
+          const dots = dotsContainer.querySelectorAll(\'span\');
+
+          function showSlide_{popup_id}(n) {{
+            currentSlide_{popup_id} = (n + slides.length) % slides.length;
+            slides.forEach((slide, index) => {{
+              slide.style.opacity = index === currentSlide_{popup_id} ? \'1\' : \'0\';
+            }});
+            dots.forEach((dot, index) => {{
+              dot.style.background = index === currentSlide_{popup_id} ? \'rgba(255,255,255,1)\' : \'rgba(255,255,255,0.5)\';
+            }});
+          }}
+
+          window.changeSlide_{popup_id} = function(direction) {{
+            showSlide_{popup_id}(currentSlide_{popup_id} + direction);
+          }};
+
+          showSlide_{popup_id}(0);
+        }})();
+      </script>
+    </div>
+  ')) |>
+    dplyr::ungroup() |>
+    dplyr::select(-popup_id, -images_processed, -image_list, -images_html)
+}

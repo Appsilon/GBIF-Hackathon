@@ -3,25 +3,35 @@ md.map_ui <- function(id, header_text) {
 
   bslib::card(
     bslib::card_header(header_text),
-    bslib::card_body(leaflet::leafletOutput(ns("map")), padding = 0)
+    bslib::card_body(mapgl::maplibreOutput(ns("map")), padding = 0)
   )
 }
 
 md.map_server <- function(id, rc.data) {
   shiny::moduleServer(id, function(input, output, session) {
     ns <- session$ns
+    # Made with the help of Claude Sonnet 4.5
 
-    output$map <- leaflet::renderLeaflet({
-      plt.leaflet()
+    output$map <- mapgl::renderMaplibre({
+      plt.maplibre()
     })
 
-    observe({
-      req(rc.data())
+    shiny::observe({
 
-      leaflet::leafletProxy(ns("map")) |>
-        leaflet::clearMarkerClusters() |>
-        leaflet::clearMarkers() |>
-        plt.leaflet_markers(data = rc.data()$occurrence)
+      media_info <-
+        rc.data()$multimedia |>
+        dplyr::group_by(id, creator, license, rights_holder) |>
+        dplyr::summarise(images = paste(image_url, collapse = ","), .groups = "drop")
+
+      occurrence_with_media <-
+        rc.data()$occurrence |>
+        dplyr::left_join(media_info)
+
+      observations_sf <- tidy.coords_sf(occurrence_with_media) |> tidy.map_popup()
+
+      mapgl::maplibre_proxy(ns("map")) |>
+        mapgl::clear_layer(c("observation_heatmap", "observation_circles")) |>
+        plt.map_with_heatmap(observations_sf = observations_sf)
     })
   })
 }
