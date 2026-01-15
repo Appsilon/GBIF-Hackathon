@@ -1,10 +1,10 @@
-info_ui <- function(id = "info") {
+md.info_ui <- function(id = "info") {
   ns <- shiny::NS(id)
 
   shiny::div(shiny::actionLink(ns("info"), label = NULL, icon = shiny::icon("circle-info")))
 }
 
-info_server <- function(id = "info") {
+md.info_server <- function(id = "info") {
   shiny::moduleServer(id, function(input, output, session) {
     shiny::observe({
       shiny::showModal(shiny::modalDialog(
