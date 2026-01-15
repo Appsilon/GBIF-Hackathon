@@ -15,8 +15,12 @@ Imports:
     bslib,
     dplyr,
     echarts4r,
+    hms,
     leaflet,
+    lubridate,
+    rlang,
     shiny,
     shinyWidgets,
-    stringr
+    stringr,
+    tidyr
 RoxygenNote: 7.3.3
