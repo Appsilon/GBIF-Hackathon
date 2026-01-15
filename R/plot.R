@@ -33,5 +33,6 @@ plot.ranking <- function(data) {
     echarts4r::e_y_axis(axisLabel = list(fontSize = 12)) |>
     echarts4r::e_color(c("#4C9C2E")) |>
     echarts4r::e_tooltip(trigger = "axis") |>
-    echarts4r::e_flip_coords()
+    echarts4r::e_flip_coords() |>
+    echarts4r::e_grid(left = 100)
 }

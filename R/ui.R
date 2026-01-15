@@ -45,7 +45,8 @@ ui <- function() {
       row_heights = c(1, 2, 3),
       style = "overflow: auto;",
       bslib::card(), bslib::card(), bslib::card(),
-      bslib::card(), bslib::card(),
+      md.ranking_ui("life_stage", "Life stage ranking"),
+      md.ranking_ui("country", "Country ranking"),
       md.timeline_ui()
     ),
     bslib::card()
