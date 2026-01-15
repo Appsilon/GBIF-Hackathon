@@ -71,5 +71,7 @@ tidy.ranking <- function(data, .by, n = 4) {
     dplyr::mutate(
       !!dplyr::sym(.by) := dplyr::if_else(dplyr::row_number() > n, "Others", !!dplyr::sym(.by))
       ) |>
-    dplyr::summarise(Observations = sum(Observations), .by = .by)
+    dplyr::summarise(Observations = sum(Observations), .by = .by) |>
+    dplyr::rename_with(\(name) stringr::str_replace(name, "_", " ")) |>
+    dplyr::rename_with(stringr::str_to_sentence)
 }
