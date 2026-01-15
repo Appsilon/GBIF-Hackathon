@@ -67,7 +67,7 @@ tidy.timeline <- function(data, period = c("year", "month", "hour")) {
 tidy.ranking <- function(data, .by, n = 4) {
   data |>
     dplyr::summarise(Observations = sum(individual_count, na.rm = FALSE), .by = .by) |>
-    dplyr::arrange(dplyr::desc(Observations)) |>
+    dplyr::arrange(Observations) |>
     dplyr::mutate(
       !!dplyr::sym(.by) := dplyr::if_else(dplyr::row_number() > n, "Others", !!dplyr::sym(.by))
       ) |>
