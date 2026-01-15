@@ -29,19 +29,11 @@ server <- function(input, output, session) {
 
   rv <- shiny::reactiveValues()
 
-  shiny::observe({
-    rv$name <- rc.name()
-    rv$continents <- rc.continents()
-    rv$countries <- rc.countries()
-    print(rv$name)
-    print(rv$continents)
-    print(rv$countries)
-  })
-
   rc.data <- shiny::reactive({
+    shiny::req(rc.name(), rc.continents(), rc.countries())
     occurrence <-
       occurrence_data |>
-      dplyr::filter(name == rv$name, continent %in% rv$continents, country %in% rv$countries)
+      dplyr::filter(name == rc.name(), continent %in% rc.continents(), country %in% rc.countries())
 
     multimedia <-
       multimedia_data |>
@@ -49,8 +41,16 @@ server <- function(input, output, session) {
 
     list(occurrence = occurrence, multimedia = multimedia)
   }) |>
-    shiny::bindCache(rv$name, rv$continents, rv$countries)
+    shiny::bindCache(rc.name(), rc.continents(), rc.countries())
 
-  md.footer_server()
   md.info_server()
+  md.timeline_server(rc.data = rc.data)
+  md.footer_server()
+
+  shiny::observe({
+    print(rc.name())
+    print(rc.continents())
+    print(rc.countries())
+    print(rc.data())
+  })
 }

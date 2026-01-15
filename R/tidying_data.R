@@ -36,3 +36,32 @@ tidy.multimedia <- function(data) {
       .keep = "none"
     )
 }
+
+tidy.timeline <- function(data, period = c("year", "month", "hour")) {
+  period <- match.arg(period)
+
+  df <-
+    data |>
+    dplyr::mutate(
+      individual_count,
+      year = lubridate::floor_date(event_date, "year"),
+      month = lubridate::month(event_date) |> as.integer(),
+      hour = hms::as_hms(event_time) |> lubridate::hour() |> as.integer(),
+      .keep = "none"
+    ) |>
+    dplyr::summarise(Observations = sum(individual_count, na.rm = TRUE), .by = period) |>
+    dplyr::arrange(!!dplyr::sym(period))
+
+  complete_vector <- switch(
+    period,
+    year = df |> dplyr::pull(1) |> (\(x) seq.Date(x[[1]], x[[length(x)]], "year"))(),
+    month = seq.int(1, 12, 1),
+    hour = seq.int(1, 23, 1)
+  )
+
+  df |>
+    tidyr::drop_na() |>
+    tidyr::complete(!!dplyr::sym(period) := complete_vector, fill = list(Observations = 0L))
+}
+
+

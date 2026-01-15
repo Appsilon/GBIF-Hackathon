@@ -42,11 +42,11 @@ ui <- function() {
         6, 6,
         12
       ),
-      row_heights = c(1, 2, 2),
+      row_heights = c(1, 2, 3),
       style = "overflow: auto;",
       bslib::card(), bslib::card(), bslib::card(),
       bslib::card(), bslib::card(),
-      bslib::card()
+      md.timeline_ui()
     ),
     bslib::card()
   )
