@@ -64,7 +64,7 @@ tidy.timeline <- function(data, period = c("year", "month", "hour")) {
     tidyr::complete(!!dplyr::sym(period) := complete_vector, fill = list(Observations = 0L))
 }
 
-tidy.ranking <- function(data, n = 4, .by = NULL) {
+tidy.ranking <- function(data, .by, n = 4) {
   data |>
     dplyr::summarise(Observations = sum(individual_count, na.rm = FALSE), .by = .by) |>
     dplyr::arrange(dplyr::desc(Observations)) |>
