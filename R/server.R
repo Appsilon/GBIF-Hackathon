@@ -27,8 +27,6 @@ server <- function(input, output, session) {
 
   rc.countries <- md.select_input_server("country", rc.country_vector)
 
-  rv <- shiny::reactiveValues()
-
   rc.data <- shiny::reactive({
     shiny::req(rc.name(), rc.continents(), rc.countries())
     occurrence <-
@@ -43,20 +41,20 @@ server <- function(input, output, session) {
   }) |>
     shiny::bindCache(rc.name(), rc.continents(), rc.countries())
 
-  md.info_server()
-  md.valuebox_server("observations", rc.data = rc.data, .by = NULL)
-  md.valuebox_server("sex", rc.data = rc.data, .by = "sex")
-  md.valuebox_server("info", rc.data = rc.data, .by = NULL)
-  md.ranking_server("life_stage", rc.data = rc.data)
-  md.ranking_server("country", rc.data = rc.data, n = 7)
-  md.timeline_server("timeline", rc.data = rc.data)
-  md.map_server("map", rc.data = rc.data)
-  md.footer_server()
+  rv <- shiny::reactiveValues()
 
   shiny::observe({
-    print(rc.name())
-    print(rc.continents())
-    print(rc.countries())
-    print(rc.data())
+    rv$continent <- rc.continents()
+    rv$country <- rc.countries()
   })
+
+  md.info_server()
+  md.valuebox_server("observations", rv = rv, rc.data = rc.data, .by = NULL)
+  md.valuebox_server("sex", rv = rv, rc.data = rc.data, .by = "sex")
+  md.valuebox_server("info", rv = rv, rc.data = rc.data, .by = NULL)
+  md.ranking_server("life_stage", rv = rv, rc.data = rc.data)
+  md.ranking_server("country", rv = rv, rc.data = rc.data, n = 7)
+  md.timeline_server("timeline", rv = rv, rc.data = rc.data)
+  md.map_server("map", rc.data = rc.data)
+  md.footer_server()
 }

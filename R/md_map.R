@@ -18,6 +18,7 @@ md.map_server <- function(id, rc.data) {
 
     shiny::observe({
 
+      shiny::req(rc.data())
       media_info <-
         rc.data()$multimedia |>
         dplyr::group_by(id, creator, license, rights_holder) |>

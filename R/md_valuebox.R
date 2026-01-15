@@ -11,9 +11,15 @@ md.valuebox_ui <- function(id, header_text, icon = NULL) {
   )
 }
 
-md.valuebox_server <- function(id, rc.data, .by) {
+md.valuebox_server <- function(id, rv, rc.data, .by) {
   shiny::moduleServer(id, function(input, output, session) {
     output$body <- shiny::renderUI({
+
+      shiny::validate(
+        shiny::need(rv$continent, "Select at least one continent to visualize data."),
+        shiny::need(rv$country, "Select at least one country to visualize data.")
+      )
+
       shiny::req(rc.data())
       df <- rc.data()$occurrence |> tidy.valuebox(.by = .by)
 

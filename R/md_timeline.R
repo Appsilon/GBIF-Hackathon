@@ -18,11 +18,16 @@ md.timeline_ui <- function(id = "timeline") {
   )
 }
 
-md.timeline_server <- function(id = "timeline", rc.data) {
+md.timeline_server <- function(id = "timeline", rv, rc.data) {
   shiny::moduleServer(id, function(input, output, session) {
 
     output$plot <- echarts4r::renderEcharts4r({
+      shiny::validate(
+        shiny::need(rv$continent, "Select at least one continent to visualize data."),
+        shiny::need(rv$country, "Select at least one country to visualize data.")
+      )
 
+      shiny::req(rc.data())
       rc.data()$occurrence |> tidy.timeline(stringr::str_to_lower(input$radio)) |> plot.timeline()
     })
   })
