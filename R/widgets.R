@@ -17,6 +17,7 @@ wd.virtual_select_input <- function(
     optionsCount = 7,
     search = TRUE,
     searchNormalize = TRUE,
-    showSelectedOptionsFirst = TRUE
+    showSelectedOptionsFirst = TRUE,
+    showValueAsTags = TRUE
   )
 }
