@@ -3,8 +3,8 @@ ui <- function() {
   title <- shiny::tagList(
     shiny::a(
       id = "title-logo",
-      shiny::img(src = "dir/img/kamogawa_hanko.png", width = "48px"),
-      href = "https://github.com/LKamogawa"
+      shiny::img(src = "dir/img/gbif-standard-logo-green.png", width = "108px"),
+      href = "https://www.gbif.org/"
     ),
     shiny::span("GBIF Dashboard")
   )
