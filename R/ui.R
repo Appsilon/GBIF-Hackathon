@@ -51,7 +51,7 @@ ui <- function() {
       md.ranking_ui("country", "Country ranking"),
       md.timeline_ui()
     ),
-    bslib::card()
+    md.map_ui("map", "Observations Distribution on Map")
   )
 
   bslib::page_navbar(

@@ -49,7 +49,8 @@ server <- function(input, output, session) {
   md.valuebox_server("info", rc.data = rc.data, .by = NULL)
   md.ranking_server("life_stage", rc.data = rc.data)
   md.ranking_server("country", rc.data = rc.data, n = 7)
-  md.timeline_server(rc.data = rc.data)
+  md.timeline_server("timeline", rc.data = rc.data)
+  md.map_server("map", rc.data = rc.data)
   md.footer_server()
 
   shiny::observe({

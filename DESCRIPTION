@@ -10,7 +10,9 @@ Description: This Shiny app was developed as part of a home assignment for an R 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Depends: R (>= 4.5)
+Depends: 
+    R (>= 4.5),
+    leaflet.extras
 Imports: 
     bsicons,
     bslib,
