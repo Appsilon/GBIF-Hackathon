@@ -23,8 +23,7 @@ server <- function(input, output, session) {
       dplyr::pull(country) |>
       unique() |>
       sort()
-  }) |>
-    shiny::bindCache(rc.name(), rc.continents())
+  })
 
   rc.countries <- md.select_input_server("country", rc.country_vector)
 
@@ -38,6 +37,19 @@ server <- function(input, output, session) {
     print(rv$continents)
     print(rv$countries)
   })
+
+  rc.data <- shiny::reactive({
+    occurrence <-
+      occurrence_data |>
+      dplyr::filter(name == rv$name, continent %in% rv$continents, country %in% rv$countries)
+
+    multimedia <-
+      multimedia_data |>
+      dplyr::inner_join(dplyr::select(occurrence, id))
+
+    list(occurrence = occurrence, multimedia = multimedia)
+  }) |>
+    shiny::bindCache(rv$name, rv$continents, rv$countries)
 
   md.footer_server()
   md.info_server()
