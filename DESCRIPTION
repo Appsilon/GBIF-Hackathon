@@ -13,6 +13,7 @@ LazyData: true
 Depends: R (>= 4.5)
 Imports: 
     bslib,
+    dplyr,
     echarts4r,
     leaflet,
     shiny,
