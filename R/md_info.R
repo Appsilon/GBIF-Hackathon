@@ -1,7 +1,13 @@
 md.info_ui <- function(id = "info") {
   ns <- shiny::NS(id)
 
-  shiny::div(shiny::actionLink(ns("info"), label = NULL, icon = shiny::icon("circle-info")))
+  shiny::div(
+    shiny::actionLink(
+      ns("info"),
+      label = NULL,
+      icon = shiny::icon("circle-info", style = "color: #2255ce !important;")
+      )
+    )
 }
 
 md.info_server <- function(id = "info") {

@@ -6,7 +6,8 @@ ui <- function() {
       shiny::img(src = "dir/img/gbif-standard-logo-green.png", width = "108px"),
       href = "https://www.gbif.org/"
     ),
-    shiny::span("GBIF Dashboard")
+    shiny::span("GBIF Dashboard", style = "font-weight: bold;"),
+    md.info_ui()
   )
 
   nav_items <- bslib::nav_item(
@@ -55,7 +56,8 @@ ui <- function() {
   )
 
   bslib::page_navbar(
-    title = shiny::tagList(title, md.info_ui()),
+    title = title,
+    theme = my_theme,
     window_title = "GBIF Observations Dashboard",
     fillable = TRUE,
     header = shiny::tagList(

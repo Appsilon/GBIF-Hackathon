@@ -19,3 +19,19 @@
 .form-group {
   margin-bottom: 0 !important;
 }
+
+.card-header {
+    background-color: #81BA6C !important;
+  }
+
+.bslib-card {
+  border-color: #c5c8ca !important;
+}
+
+.bslib-page-navbar > .navbar + div, .bslib-page-dashboard > .navbar + div {
+  background-color: #FFFCF0;
+}
+.navbar {
+    background-color: #81BA6C !important;
+  }
+

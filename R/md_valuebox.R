@@ -29,7 +29,7 @@ md.valuebox_server <- function(id, rc.data, .by) {
 
         return(
           shiny::p(
-            style = "font-size: 11px;",
+            style = "font-size: 13px;",
             shiny::HTML(paste(text, collapse = "<br>"))
           )
         )
@@ -43,7 +43,7 @@ md.valuebox_server <- function(id, rc.data, .by) {
 
         return(
           shiny::p(
-            style = "font-size: 12px;",
+            style = "font-size: 13px;",
             shiny::HTML(paste(text, collapse = "<br>"))
           )
         )
