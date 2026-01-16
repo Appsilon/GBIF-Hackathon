@@ -1,7 +1,7 @@
 Package: ShinyGBIF
 Type: Package
 Title: A Shiny App Dashboard For GBIF Observations
-Version: 0.1.0
+Version: 1.0.0
 Authors@R: c(
     person("Leonardo", "Kamogawa", email = "leonardo.kamogawa@hotmail.com", role = c("aut", "cre"))
   )
