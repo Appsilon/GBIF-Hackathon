@@ -13,8 +13,7 @@ LazyData: true
 Depends: 
     R (>= 4.5),
     mapgl,
-    sf
-Imports: 
+    sf,
     bsicons,
     bslib,
     dplyr,
@@ -28,7 +27,6 @@ Imports:
     stringr,
     tidyr,
     viridisLite
-RoxygenNote: 7.3.3
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
