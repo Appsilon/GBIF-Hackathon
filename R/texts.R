@@ -67,7 +67,7 @@ info_text <- shiny::tagList(
       "Normally, I would use the ",
       shiny::a("{leaflet} package", href = "https://rstudio.github.io/leaflet/"),
       "in my current job. But, for this assignment, I take the risk and tested a different map source
-    that I saw in an R blog's article. <br> The package is the ",
+    that I saw in an R blog's article. The package is the ",
       shiny::a("{mapgl} package, ", href = "https://walker-data.com/mapgl/"),
       "created by the writer of the article that I read before, Kyle Walker. Here the ",
       shiny::a("post's link.", href = "https://walker-data.com/posts/mapgl-dots/"),
@@ -80,8 +80,8 @@ info_text <- shiny::tagList(
     shiny::p(
       "All of the plots in the dashboards and reports of my job are maed with ",
       shiny::a("{echarts4r} package.", href = "https://echarts4r.john-coene.com/"),
-      "<br> It is excellent for easy customization, and has good interactive features that our
-    customers like a lot. <br>",
+      "It is excellent for easy customization, and has good interactive features that our
+    customers like a lot.",
       shiny::a("And is fast!", href = "https://www.appsilon.com/post/shiny-app-performance-fix"),
     ),
   )
