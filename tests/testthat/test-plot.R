@@ -1,4 +1,4 @@
-test_that("plot.timeline returns an echarts4r htmlwidget", {
+test_that("plot.timeline returns a plotly htmlwidget", {
   data <- tibble::tibble(
     year = as.Date(c("2020-01-01", "2021-01-01")),
     Observations = c(10L, 5L)
@@ -7,7 +7,7 @@ test_that("plot.timeline returns an echarts4r htmlwidget", {
   out <- plot.timeline(data)
 
   expect_s3_class(out, "htmlwidget")
-  expect_equal(out$x$type, "echarts4r")
+  expect_s3_class(out, "plotly")
 })
 
 test_that("plot.timeline uses the first column as x-axis", {
@@ -16,14 +16,14 @@ test_that("plot.timeline uses the first column as x-axis", {
     Observations = c(2L, 4L, 6L)
   )
 
-  out <- plot.timeline(data)
+  out <- plotly::plotly_build(plot.timeline(data))
 
-  # x-axis data stored internally
+  # first column is mapped to the x-axis title
   expect_true("month" %in% names(data))
-  expect_true(any(grepl("Observations", names(out$x$series[[1]]))))
+  expect_equal(out$x$layout$xaxis$title, "month")
 })
 
-test_that("plot.ranking returns an echarts4r bar chart", {
+test_that("plot.ranking returns a plotly bar chart", {
   data <- tibble::tibble(
     Family = c("A", "B", "Others"),
     Observations = c(10L, 5L, 3L)
@@ -32,17 +32,16 @@ test_that("plot.ranking returns an echarts4r bar chart", {
   out <- plot.ranking(data)
 
   expect_s3_class(out, "htmlwidget")
-  expect_equal(out$x$type, "echarts4r")
+  expect_s3_class(out, "plotly")
 })
 
-test_that("plot.ranking flips coordinates (horizontal bars)", {
+test_that("plot.ranking draws horizontal bars", {
   data <- tibble::tibble(
     Group = c("X", "Y"),
     Observations = c(1L, 2L)
   )
 
-  out <- plot.ranking(data)
+  out <- plotly::plotly_build(plot.ranking(data))
 
-  expect_true(any(grepl("flip", names(out$x))))
+  expect_equal(out$x$data[[1]]$orientation, "h")
 })
-

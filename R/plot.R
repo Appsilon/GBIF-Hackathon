@@ -1,40 +1,78 @@
 plot.timeline <- function(data) {
-  data |>
-    echarts4r::e_charts_(names(data)[[1]]) |>
-    echarts4r::e_area(
-      Observations,
-      lineStyle = list(opacity = 0.85, width = 1.5),
-      itemStyle = list(opacity = 1),
-      symbol = "none",
-      legend = list(show = FALSE)
+  x_name <- names(data)[[1]]
+  max_idx <- which.max(data$Observations)
+  max_x <- data[[x_name]][[max_idx]]
+  max_y <- data$Observations[[max_idx]]
+  mean_y <- mean(data$Observations, na.rm = TRUE)
+
+  plotly::plot_ly(
+    data,
+    x = ~get(x_name),
+    y = ~Observations,
+    type = "scatter",
+    mode = "lines",
+    fill = "tozeroy",
+    line = list(color = "#4C9C2E", width = 1.5),
+    fillcolor = "rgba(76,156,46,0.85)",
+    hovertemplate = "%{y}<extra></extra>"
+  ) |>
+    plotly::add_markers(
+      x = max_x,
+      y = max_y,
+      marker = list(color = "#4C9C2E", size = 9),
+      hovertemplate = paste0("Max: ", max_y, "<extra></extra>"),
+      inherit = FALSE
     ) |>
-    echarts4r::e_x_axis(axisLabel = list(fontSize = 12)) |>
-    echarts4r::e_y_axis(axisLabel = list(fontSize = 12)) |>
-    echarts4r::e_mark_point(data = list(name = "Max", type = "max")) |>
-    echarts4r::e_mark_line(data = list(name = "Mean", type = "average"), precision = 0) |>
-    echarts4r::e_color("#4C9C2E") |>
-    echarts4r::e_tooltip(trigger = "axis") |>
-    echarts4r::e_toolbox(emphasis = list(iconStyle = list(color = "#4C9C2E", borderColor = "#4C9C2E"))) |>
-    echarts4r::e_toolbox_feature(feature = "magicType", type = list("line", "bar")) |>
-    echarts4r::e_datazoom(toolbox = FALSE)
+    plotly::layout(
+      showlegend = FALSE,
+      hovermode = "x unified",
+      xaxis = list(title = x_name, tickfont = list(size = 12)),
+      yaxis = list(title = "Observations", tickfont = list(size = 12)),
+      shapes = list(
+        list(
+          type = "line",
+          xref = "paper", x0 = 0, x1 = 1,
+          yref = "y", y0 = mean_y, y1 = mean_y,
+          line = list(color = "#4C9C2E", width = 1, dash = "dash")
+        )
+      ),
+      annotations = list(
+        list(
+          x = max_x, y = max_y,
+          text = paste0("Max: ", max_y),
+          showarrow = TRUE, arrowhead = 2, ax = 0, ay = -30
+        )
+      )
+    ) |>
+    plotly::rangeslider() |>
+    plotly::config(responsive = TRUE)
 }
 
 plot.ranking <- function(data) {
-  data |>
-    echarts4r::e_charts_(names(data)[[1]]) |>
-    echarts4r::e_bar(
-      Observations,
-      lineStyle = list(opacity = 0.85, width = 1.5),
-      itemStyle = list(opacity = 1),
-      symbol = "none",
-      legend = list(show = FALSE)
+  y_name <- names(data)[[1]]
+
+  plotly::plot_ly(
+    data,
+    x = ~Observations,
+    y = ~get(y_name),
+    type = "bar",
+    orientation = "h",
+    marker = list(color = "#4C9C2E"),
+    hovertemplate = "%{x}<extra></extra>"
+  ) |>
+    plotly::layout(
+      showlegend = FALSE,
+      hovermode = "y unified",
+      xaxis = list(title = "Observations", tickfont = list(size = 12)),
+      yaxis = list(
+        title = "",
+        tickfont = list(size = 12),
+        categoryorder = "array",
+        categoryarray = data[[y_name]]
+      ),
+      margin = list(l = 100)
     ) |>
-    echarts4r::e_x_axis(axisLabel = list(fontSize = 12)) |>
-    echarts4r::e_y_axis(axisLabel = list(fontSize = 12)) |>
-    echarts4r::e_color(c("#4C9C2E")) |>
-    echarts4r::e_tooltip(trigger = "axis") |>
-    echarts4r::e_flip_coords() |>
-    echarts4r::e_grid(left = 100)
+    plotly::config(responsive = TRUE)
 }
 
 plt.maplibre <- function() {

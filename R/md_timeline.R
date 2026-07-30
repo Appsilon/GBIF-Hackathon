@@ -13,7 +13,7 @@ md.timeline_ui <- function(id = "timeline") {
           direction = "vertical",
         )
       ),
-      bslib::card_body(echarts4r::echarts4rOutput(ns("plot")))
+      bslib::card_body(plotly::plotlyOutput(ns("plot")))
     )
   )
 }
@@ -21,7 +21,7 @@ md.timeline_ui <- function(id = "timeline") {
 md.timeline_server <- function(id = "timeline", rv, rc.data) {
   shiny::moduleServer(id, function(input, output, session) {
 
-    output$plot <- echarts4r::renderEcharts4r({
+    output$plot <- plotly::renderPlotly({
       shiny::validate(
         shiny::need(rv$continent, "Select at least one continent to visualize data."),
         shiny::need(rv$country, "Select at least one country to visualize data.")
