@@ -90,6 +90,15 @@ fi
 # is expected to be overwritten, not merged with
 git push --force origin "$branch"
 
+log "issue #$number: deploying preview to Connect"
+deploy_output=$(Rscript /app/deploy/deploy.R "$branch" 2>&1)
+echo "$deploy_output"
+deploy_url=$(printf '%s\n' "$deploy_output" | sed -n 's/^DEPLOY_URL=//p' | tail -1)
+if [ -z "$deploy_url" ]; then
+  log "issue #$number: deploy failed, no URL produced"
+  exit 1
+fi
+
 template=".github/PULL_REQUEST_TEMPLATE.md"
 if [ -f "$template" ]; then
   pr_body=$(sed "s/^Closes\$/Closes #$number/" "$template")
@@ -101,7 +110,7 @@ $description}"
 $criteria_report}"
   pr_body="${pr_body/"## Deployment link"/## Deployment link
 
-N/A — automated fix, no deployment step}"
+$deploy_url}"
 else
   pr_body="Closes #$number
 
@@ -111,7 +120,11 @@ $description
 
 ## Acceptance criteria
 
-$criteria_report"
+$criteria_report
+
+## Deployment link
+
+$deploy_url"
 fi
 
 existing_pr_state=$(gh pr view "$branch" --repo "$REPO" --json state -q .state 2>/dev/null || echo "")
