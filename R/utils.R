@@ -3,7 +3,7 @@ clean_id <- function(data) {
 }
 
 my_theme <- bslib::bs_theme(
-  primary = "#4C9C2E",
+  primary = "#1A6FB5",
   secondary = "#231F20",
   base_font = bslib::font_google("Inter"),
   bg = "#fff",
