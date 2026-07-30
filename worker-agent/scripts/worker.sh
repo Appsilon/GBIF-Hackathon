@@ -26,9 +26,14 @@ Title: $title
 
 $body
 
-Make the necessary code changes and leave them staged/committed in the
-working tree. Do not push or open a pull request yourself — that is
-handled separately.
+Make the necessary code changes and commit them yourself. Do not push
+or open a pull request yourself — that is handled separately.
+
+Write your own commit message, in full — don't leave it to a fallback.
+Follow normal git conventions: a short imperative subject line, a blank
+line, then a body explaining what changed and why if it's not obvious
+from the subject alone. End the commit message with a trailer on its
+own line: "Co-Authored-By: Claude <noreply@anthropic.com>".
 
 Your entire final reply must be ONLY the pull request "Change description"
 text itself: a few plain sentences on what changed and why. No heading,
