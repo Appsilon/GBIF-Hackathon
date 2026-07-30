@@ -7,7 +7,7 @@
   height: 60px;
   border-radius: 50%;
   border: none;
-  background-color: #81BA6C;
+  background-color: #6A0DAD;
   color: #fff;
   display: flex;
   align-items: center;
@@ -18,7 +18,7 @@
 }
 
 .chat-fab:hover {
-  background-color: #6ea65a;
+  background-color: #57009A;
 }
 
 .chat-panel {
@@ -71,7 +71,7 @@
 }
 
 .chat-cat:hover {
-  background-color: #81BA6C;
+  background-color: #6A0DAD;
   color: #fff;
 }
 
@@ -104,6 +104,6 @@
 }
 
 .chat-back:hover {
-  background-color: #81BA6C;
+  background-color: #6A0DAD;
   color: #fff;
 }
