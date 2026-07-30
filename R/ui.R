@@ -63,7 +63,8 @@ ui <- function() {
     header = shiny::tagList(
       shiny::tags$head(
         shiny::tags$link(rel = "stylesheet", type = "text/css", href = "dir/css/styles.css")
-      )
+      ),
+      md.chat_ui()
     ),
     footer = md.footer_ui(),
     bslib::nav_spacer(),
