@@ -91,7 +91,7 @@ fi
 git push --force origin "$branch"
 
 log "issue #$number: deploying preview to Connect"
-deploy_output=$(Rscript /app/deploy/deploy.R "$branch" 2>&1)
+deploy_output=$(Rscript /app/deploy/deploy.R "$branch" 2>&1) || true
 echo "$deploy_output"
 deploy_url=$(printf '%s\n' "$deploy_output" | sed -n 's/^DEPLOY_URL=//p' | tail -1)
 if [ -z "$deploy_url" ]; then
