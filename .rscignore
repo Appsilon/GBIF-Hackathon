@@ -1,0 +1,5 @@
+deploy/
+worker-agent/
+tidy_rawdata/
+tests/
+.github/
