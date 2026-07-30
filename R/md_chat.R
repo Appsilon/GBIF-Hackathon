@@ -106,9 +106,39 @@ md.chat_ui <- function() {
   )
 }
 
+# Confirmation dialog shown before any issue is opened.
+chat_confirm_modal <- function(title, body) {
+  shiny::modalDialog(
+    title = "Confirm this suggestion",
+    easyClose = FALSE,
+    shiny::tags$p("The following issue will be opened for the development team:"),
+    shiny::tags$h5(title),
+    shiny::tags$pre(
+      style = "white-space: pre-wrap; max-height: 300px; overflow: auto;",
+      body
+    ),
+    footer = shiny::tagList(
+      shiny::actionButton("chat_issue_cancel", "Cancel"),
+      shiny::actionButton("chat_issue_confirm", "Confirm & open issue", class = "btn-success")
+    )
+  )
+}
+
 md.chat_server <- function(input, output, session) {
   client <- shiny::reactiveVal(NULL)
   current_cat <- shiny::reactiveVal(NULL)
+  staged_issue <- shiny::reactiveVal(NULL)
+
+  # Called by the `propose_issue` tool: stage the issue and ask the user to
+  # confirm before anything is opened on GitHub.
+  propose <- function(title, body) {
+    staged_issue(list(title = title, body = body))
+    shiny::showModal(chat_confirm_modal(title, body), session = session)
+    paste(
+      "A confirmation dialog summarising the issue has been shown to the user.",
+      "Wait for their decision; do not take any further action."
+    )
+  }
 
   shiny::observeEvent(input$chat_category, {
     cat_key <- input$chat_category
@@ -120,7 +150,11 @@ md.chat_server <- function(input, output, session) {
 
     current_cat(cat_key)
     shinychat::chat_clear("chat")
-    client(ellmer::chat_anthropic(system_prompt = cat$prompt))
+    chat_client <- ellmer::chat_anthropic(
+      system_prompt = paste(cat$prompt, chat_issue_instructions)
+    )
+    chat_client$register_tools(gh.chat_tools(propose))
+    client(chat_client)
     shinychat::chat_append("chat", cat$greeting)
   })
 
@@ -128,5 +162,20 @@ md.chat_server <- function(input, output, session) {
     shiny::req(client())
     stream <- client()$stream_async(input$chat_user_input)
     shinychat::chat_append("chat", stream)
+  })
+
+  shiny::observeEvent(input$chat_issue_confirm, {
+    issue <- staged_issue()
+    shiny::req(issue)
+    staged_issue(NULL)
+    shiny::removeModal()
+    shinychat::chat_append("chat", "Opening the issue…")
+    shinychat::chat_append("chat", gh.open_issue(issue$title, issue$body))
+  })
+
+  shiny::observeEvent(input$chat_issue_cancel, {
+    staged_issue(NULL)
+    shiny::removeModal()
+    shinychat::chat_append("chat", "Okay, I discarded the suggestion. Let me know how you'd like to adjust it.")
   })
 }
