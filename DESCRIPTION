@@ -24,6 +24,7 @@ Imports:
     hms,
     lubridate,
     purrr,
+    pkgload,
     rlang,
     shiny,
     shinychat,
