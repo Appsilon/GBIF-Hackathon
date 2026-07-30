@@ -1,0 +1,10 @@
+services:
+  worker-agent:
+    build: .
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - work-data:/work
+
+volumes:
+  work-data:
