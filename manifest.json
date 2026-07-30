@@ -2846,10 +2846,10 @@
         "Package": "terra",
         "Type": "Package",
         "Title": "Spatial Data Analysis",
-        "Version": "1.9-34",
-        "Date": "2026-06-18",
+        "Version": "1.9-27",
+        "Date": "2026-05-09",
         "Depends": "R (>= 3.5.0), methods",
-        "Suggests": "parallel, tinytest, ncdf4, sf (>= 0.9-8), igraph, deldir,\nXML, leaflet (>= 2.2.1), htmlwidgets, future, future.apply",
+        "Suggests": "parallel, tinytest, ncdf4, sf (>= 0.9-8), deldir, XML,\nleaflet (>= 2.2.1), htmlwidgets, future, future.apply",
         "LinkingTo": "Rcpp",
         "Imports": "Rcpp (>= 1.0-10)",
         "SystemRequirements": "C++17, GDAL (>= 2.2.3), GEOS (>= 3.4.0), PROJ (>=\n4.9.3), TBB, sqlite3",
@@ -2863,11 +2863,11 @@
         "LazyLoad": "yes",
         "Authors@R": "c(\n\tperson(\"Robert J.\", \"Hijmans\", role=c(\"cre\", \"aut\"),  \n\t\t\temail=\"r.hijmans@gmail.com\", comment=c(ORCID=\"0000-0001-5872-2872\")),\t\t\t\n    person(\"Andrew\", \"Brown\", role=\"aut\", comment=c(ORCID=\"0000-0002-4565-533X\")),\n    person(\"Márcia\", \"Barbosa\", role=\"aut\", comment=c(ORCID=\"0000-0001-8972-7713\")),\n    person(\"Krzysztof\", \"Dyba\", role=\"ctb\", comment=c(ORCID=\"0000-0002-8614-3816\")),\n    person(\"Roger\", \"Bivand\", role=\"ctb\", comment=c(ORCID=\"0000-0003-2392-6140\")),\n    person(\"Michael\", \"Chirico\", role=\"ctb\", comment=c(ORCID=\"0000-0003-0787-087X\")),\n    person(\"Emanuele\", \"Cordano\", role=\"ctb\",comment=c(ORCID=\"0000-0002-3508-5898\")),\n    person(\"Edzer\", \"Pebesma\", role=\"ctb\", comment=c(ORCID=\"0000-0001-8049-7069\")),\n    person(\"Barry\", \"Rowlingson\", role=\"ctb\", comment=c(ORCID=\"0000-0002-8586-6625\")),\n    person(\"Michael D.\", \"Sumner\", role=\"ctb\", comment=c(ORCID=\"0000-0002-2471-7511\")))",
         "NeedsCompilation": "yes",
-        "Packaged": "2026-06-19 03:43:47 UTC; rhijm",
+        "Packaged": "2026-05-09 12:25:47 UTC; rhijm",
         "Author": "Robert J. Hijmans [cre, aut] (ORCID:\n    <https://orcid.org/0000-0001-5872-2872>),\n  Andrew Brown [aut] (ORCID: <https://orcid.org/0000-0002-4565-533X>),\n  Márcia Barbosa [aut] (ORCID: <https://orcid.org/0000-0001-8972-7713>),\n  Krzysztof Dyba [ctb] (ORCID: <https://orcid.org/0000-0002-8614-3816>),\n  Roger Bivand [ctb] (ORCID: <https://orcid.org/0000-0003-2392-6140>),\n  Michael Chirico [ctb] (ORCID: <https://orcid.org/0000-0003-0787-087X>),\n  Emanuele Cordano [ctb] (ORCID: <https://orcid.org/0000-0002-3508-5898>),\n  Edzer Pebesma [ctb] (ORCID: <https://orcid.org/0000-0001-8049-7069>),\n  Barry Rowlingson [ctb] (ORCID: <https://orcid.org/0000-0002-8586-6625>),\n  Michael D. Sumner [ctb] (ORCID:\n    <https://orcid.org/0000-0002-2471-7511>)",
         "Repository": "CRAN",
-        "Date/Publication": "2026-06-19 15:10:02 UTC",
-        "Built": "R 4.6.0; x86_64-pc-linux-gnu; 2026-07-30 10:43:53 UTC; unix"
+        "Date/Publication": "2026-05-10 05:10:02 UTC",
+        "Built": "R 4.6.0; x86_64-pc-linux-gnu; 2026-07-30 11:28:40 UTC; unix"
       }
     },
     "testthat": {
@@ -3428,13 +3428,13 @@
       "checksum": "1e0ee9da9c04001ab4b283d9c96bd5c1"
     },
     ".claude/settings.local.json": {
-      "checksum": "7a087440e95f6fd2b13e95f3b0d5b416"
+      "checksum": "24dc5708f508cc782b3d7649020a8975"
     },
     ".github/ISSUE_TEMPLATE/issue.yml": {
       "checksum": "b40c064cfc7ae95324c6c5b3e09edf7c"
     },
     ".github/PULL_REQUEST_TEMPLATE.md": {
-      "checksum": "a3a6c876ca116e632bfc709db655ed00"
+      "checksum": "d94f1baa5600b6b56fd5c01f3dacafbc"
     },
     ".Rbuildignore": {
       "checksum": "c290e97d9eb1d4e77cebd6b9f3ac5228"
@@ -3536,7 +3536,7 @@
       "checksum": "0ff62b149d89f81a2d3a5189ab5ae9e8"
     },
     "renv.lock": {
-      "checksum": "86a0636df126ce68cabb24475678bf32"
+      "checksum": "45e3756f710c300ffcf1ef326db8d98b"
     },
     "tests/testthat.R": {
       "checksum": "4349d34e2816e344146dedce5d770186"
@@ -3581,7 +3581,7 @@
       "checksum": "e40bc881e436c9a4843420d123f44631"
     },
     "worker-agent/scripts/worker.sh": {
-      "checksum": "705e59a1964d823ac99efbe910b55e89"
+      "checksum": "06ceb5c6d4702d7b37e57c7e9fbb671f"
     }
   },
   "users": null
