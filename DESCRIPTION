@@ -22,6 +22,7 @@ Imports:
     glue,
     hms,
     lubridate,
+    pkgload,
     rlang,
     shiny,
     shinyWidgets,

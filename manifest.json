@@ -3443,7 +3443,7 @@
       "checksum": "025435f314a716736f8139727d0554a1"
     },
     "app.R": {
-      "checksum": "9ae83cb4ac7d41e5d831d0c301f112b9"
+      "checksum": "7c8bbc819ce11571419c6e47ea4389f2"
     },
     "data/multimedia_poland.rda": {
       "checksum": "4cfe561594e55ef9bf71fcbd2a8d6ff1"
@@ -3461,10 +3461,10 @@
       "checksum": "d953db02a5b1a6265e71d4ff2b7bd4a1"
     },
     "deploy/deploy.R": {
-      "checksum": "42f659f7fd78229511968db95f433e48"
+      "checksum": "ebb59a39719ae7e6e592100056628ff3"
     },
     "DESCRIPTION": {
-      "checksum": "381e4685175abb8596731c38dfd0728e"
+      "checksum": "cece2dc3ca71721cc6e7bae16047946f"
     },
     "inst/www/css/styles.css": {
       "checksum": "0bcc42a23fbe9887bb23a33a63578115"
@@ -3486,6 +3486,9 @@
     },
     "NAMESPACE": {
       "checksum": "8b54e5a89fbda3af5e077053d40bec76"
+    },
+    "R/_disable_autoload.R": {
+      "checksum": "1178c335d6c11555fd1c4ec6098dfee6"
     },
     "R/md_footer.R": {
       "checksum": "2c6a82e5993bc2522d484a5c340672a4"
@@ -3557,16 +3560,16 @@
       "checksum": "ab85b1cf3e8895cd2cffcf0356ff80ed"
     },
     "worker-agent/.env.example": {
-      "checksum": "01290ba011f796d33823f831a82318fa"
+      "checksum": "e239650b0f894db25a746b591e248846"
     },
     "worker-agent/docker-compose.yml": {
       "checksum": "9b150d367c7b361529d94f6e974d07e3"
     },
     "worker-agent/Dockerfile": {
-      "checksum": "3ba585b1f0b82808dcb80c945546760e"
+      "checksum": "a1e8e293e0f521c65b9627fc7fbc2f79"
     },
     "worker-agent/entrypoint.sh": {
-      "checksum": "3807a27949c45e379d2e1390cd310768"
+      "checksum": "ee57970988b6170911c08c2c6d662675"
     },
     "worker-agent/README.md": {
       "checksum": "2efc44e4f75bdbc6cadbda4b7cdbda96"
@@ -3575,13 +3578,13 @@
       "checksum": "78ce74960b9e6848236f471239e5f52b"
     },
     "worker-agent/scripts/lib/common.sh": {
-      "checksum": "1d06be52910de117e11442d12bac451d"
+      "checksum": "497a4ec453a6ad365887e5d4a3380f68"
     },
     "worker-agent/scripts/poll.sh": {
       "checksum": "e40bc881e436c9a4843420d123f44631"
     },
     "worker-agent/scripts/worker.sh": {
-      "checksum": "06ceb5c6d4702d7b37e57c7e9fbb671f"
+      "checksum": "557e6ee5c3bcfc8101579287b57edc32"
     }
   },
   "users": null
