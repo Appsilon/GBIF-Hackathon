@@ -57,4 +57,5 @@ server <- function(input, output, session) {
   md.timeline_server("timeline", rv = rv, rc.data = rc.data)
   md.map_server("map", rc.data = rc.data)
   md.footer_server()
+  md.chat_server(input, output, session)
 }
