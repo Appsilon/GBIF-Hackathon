@@ -1,6 +1,5 @@
 name: Issue
 description: Standard issue template
-title: ''
 labels: []
 body:
   - type: textarea
