@@ -1,10 +1,10 @@
 #footer {
   padding: 16px;
-  border-top: 1px solid #000;
+  border-top: 1px solid #2E86C1;
 }
 
 #title-logo {
-  border-right: 1px solid #c5c8ca;
+  border-right: 1px solid #AED6F1;
   padding: 0 10px;
   text-decoration: none;
 }
@@ -21,26 +21,28 @@
 }
 
 .card-header {
-    background-color: #81BA6C !important;
+    background-color: #2E86C1 !important;
+    color: #ffffff !important;
   }
 
 .bslib-card {
-  border-color: #c5c8ca !important;
+  border-color: #AED6F1 !important;
 }
 
 .bslib-page-navbar > .navbar + div, .bslib-page-dashboard > .navbar + div {
-  background-color: #FFFCF0;
+  background-color: #F0F6FC;
 }
 .navbar {
-    background-color: #81BA6C !important;
+    background-color: #2E86C1 !important;
   }
 
 .accordion-header {
-  background-color: #81BA6C !important;
-  border: 1px solid;
+  background-color: #2E86C1 !important;
+  border: 1px solid #AED6F1;
+  color: #ffffff !important;
 }
 
 .accordion-body {
-  border: 1px solid;
+  border: 1px solid #AED6F1;
   padding: 5px !important;
 }
