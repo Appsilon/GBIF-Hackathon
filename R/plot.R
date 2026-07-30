@@ -12,9 +12,9 @@ plot.timeline <- function(data) {
     echarts4r::e_y_axis(axisLabel = list(fontSize = 12)) |>
     echarts4r::e_mark_point(data = list(name = "Max", type = "max")) |>
     echarts4r::e_mark_line(data = list(name = "Mean", type = "average"), precision = 0) |>
-    echarts4r::e_color("#4C9C2E") |>
+    echarts4r::e_color("#1A6FB5") |>
     echarts4r::e_tooltip(trigger = "axis") |>
-    echarts4r::e_toolbox(emphasis = list(iconStyle = list(color = "#4C9C2E", borderColor = "#4C9C2E"))) |>
+    echarts4r::e_toolbox(emphasis = list(iconStyle = list(color = "#1A6FB5", borderColor = "#1A6FB5"))) |>
     echarts4r::e_toolbox_feature(feature = "magicType", type = list("line", "bar")) |>
     echarts4r::e_datazoom(toolbox = FALSE)
 }
@@ -31,7 +31,7 @@ plot.ranking <- function(data) {
     ) |>
     echarts4r::e_x_axis(axisLabel = list(fontSize = 12)) |>
     echarts4r::e_y_axis(axisLabel = list(fontSize = 12)) |>
-    echarts4r::e_color(c("#4C9C2E")) |>
+    echarts4r::e_color(c("#1A6FB5")) |>
     echarts4r::e_tooltip(trigger = "axis") |>
     echarts4r::e_flip_coords() |>
     echarts4r::e_grid(left = 100)
@@ -68,7 +68,7 @@ plt.map_with_heatmap <- function(base_map, observations_sf) {
     mapgl::add_circle_layer(
     id = "observation_circles",
     source = observations_sf,
-    circle_color = "#4C9C2E",
+    circle_color = "#1A6FB5",
     circle_stroke_color = "white",
     circle_stroke_width = 2,
     circle_radius = 8,
