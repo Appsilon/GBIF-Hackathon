@@ -5,7 +5,7 @@ set -euo pipefail
 
 # cron jobs don't inherit the container's env, so snapshot it here once
 # and have scripts/lib/common.sh source it back in
-env | grep -E '^(GH_TOKEN|ANTHROPIC_API_KEY|REPO|LABEL_READY|LABEL_IN_PROGRESS|LABEL_DONE|LABEL_FAILED|CLAUDE_MODEL|WORKDIR)=' \
+env | grep -E '^(GH_TOKEN|ANTHROPIC_API_KEY|REPO|LABEL_READY|LABEL_IN_PROGRESS|LABEL_DONE|LABEL_FAILED|CLAUDE_MODEL|WORKDIR|CONNECT_SERVER|CONNECT_API_KEY|CONNECT_ACCOUNT|APP_BASE_NAME)=' \
   | sed 's/^/export /' > /app/.env.runtime
 chmod 644 /app/.env.runtime
 

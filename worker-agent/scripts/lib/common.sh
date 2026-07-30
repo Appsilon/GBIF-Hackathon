@@ -7,6 +7,9 @@ set -euo pipefail
 : "${REPO:?REPO env var required (owner/name)}"
 : "${GH_TOKEN:?GH_TOKEN env var required}"
 : "${ANTHROPIC_API_KEY:?ANTHROPIC_API_KEY env var required}"
+: "${CONNECT_SERVER:?CONNECT_SERVER env var required}"
+: "${CONNECT_API_KEY:?CONNECT_API_KEY env var required}"
+: "${CONNECT_ACCOUNT:?CONNECT_ACCOUNT env var required}"
 
 LABEL_READY="${LABEL_READY:-agent-ready}"
 LABEL_IN_PROGRESS="${LABEL_IN_PROGRESS:-agent-in-progress}"
@@ -14,7 +17,8 @@ LABEL_DONE="${LABEL_DONE:-agent-done}"
 LABEL_FAILED="${LABEL_FAILED:-agent-failed}"
 WORKDIR="${WORKDIR:-/work}"
 
-export GH_TOKEN REPO LABEL_READY LABEL_IN_PROGRESS LABEL_DONE LABEL_FAILED WORKDIR
+export GH_TOKEN REPO LABEL_READY LABEL_IN_PROGRESS LABEL_DONE LABEL_FAILED WORKDIR \
+  CONNECT_SERVER CONNECT_API_KEY CONNECT_ACCOUNT APP_BASE_NAME
 
 # gh CLI commands (clone, issue, pr) pick up GH_TOKEN automatically, but
 # plain `git push`/`git fetch` over https don't — wire the credential
