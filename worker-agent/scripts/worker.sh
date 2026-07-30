@@ -9,6 +9,14 @@ issue_json=$(gh issue view "$number" --repo "$REPO" --json title,body)
 title=$(echo "$issue_json" | jq -r '.title')
 body=$(echo "$issue_json" | jq -r '.body')
 
+# issue.yml renders each form field as a "### <label>" heading in the body
+acceptance_criteria=$(printf '%s\n' "$body" | awk '
+  /^### Acceptance criteria/ { capture=1; next }
+  /^### / { capture=0 }
+  capture { print }
+' | sed -e '/^[[:space:]]*$/d')
+: "${acceptance_criteria:=(none specified in the issue)}"
+
 clone_dir="$WORKDIR/issue-$number"
 branch="agent/issue-$number"
 
@@ -18,6 +26,8 @@ gh repo clone "$REPO" "$clone_dir" -- --quiet
 cd "$clone_dir"
 git checkout -b "$branch"
 start_sha=$(git rev-parse HEAD)
+
+delimiter="===ACCEPTANCE-CRITERIA==="
 
 prompt=$(cat <<EOF
 Resolve GitHub issue #$number in this repository.
@@ -35,11 +45,20 @@ line, then a body explaining what changed and why if it's not obvious
 from the subject alone. End the commit message with a trailer on its
 own line: "Co-Authored-By: Claude <noreply@anthropic.com>".
 
-Your entire final reply must be ONLY the pull request "Change description"
-text itself: a few plain sentences on what changed and why. No heading,
-no preamble like "the change is committed", no commit hash, no restating
-these instructions — just the description paragraph(s), since it gets
-inserted directly under an existing "## Change description" heading.
+This issue's acceptance criteria are:
+
+$acceptance_criteria
+
+Once your change is committed, go through that list yourself and verify
+each criterion against what you actually did. Don't just check every
+box — if something isn't satisfied, leave it unchecked and say why.
+
+Your entire final reply must be ONLY these two parts, in this exact
+format, with nothing before, between, or after them:
+
+<a few plain sentences: what changed and why, for a PR "Change description">
+$delimiter
+<the acceptance criteria list, one line per item, each as "- [x] <criterion text>" if satisfied or "- [ ] <criterion text> — <short reason not met>" otherwise. Preserve the original criterion text as given above. Don't add or remove criteria.>
 EOF
 )
 
@@ -48,6 +67,9 @@ summary=$(claude -p "$prompt" \
   --dangerously-skip-permissions \
   ${CLAUDE_MODEL:+--model "$CLAUDE_MODEL"})
 echo "$summary"
+
+description="${summary%%"$delimiter"*}"
+criteria_report="${summary#*"$delimiter"}"
 
 if [ -n "$(git status --porcelain)" ]; then
   git add -A
@@ -73,7 +95,10 @@ if [ -f "$template" ]; then
   pr_body=$(sed "s/^Closes\$/Closes #$number/" "$template")
   pr_body="${pr_body/"## Change description"/## Change description
 
-$summary}"
+$description}"
+  pr_body="${pr_body/"## Acceptance criteria"/## Acceptance criteria
+
+$criteria_report}"
   pr_body="${pr_body/"## Deployment link"/## Deployment link
 
 N/A — automated fix, no deployment step}"
@@ -82,7 +107,11 @@ else
 
 ## Change description
 
-$summary"
+$description
+
+## Acceptance criteria
+
+$criteria_report"
 fi
 
 existing_pr_state=$(gh pr view "$branch" --repo "$REPO" --json state -q .state 2>/dev/null || echo "")
