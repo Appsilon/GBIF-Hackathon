@@ -23,6 +23,7 @@ Imports:
     glue,
     hms,
     lubridate,
+    purrr,
     rlang,
     shiny,
     shinychat,
