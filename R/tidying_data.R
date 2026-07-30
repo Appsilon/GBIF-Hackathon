@@ -86,7 +86,7 @@ tidy.valuebox <- function(data, .by) {
 tidy.coords_sf <- function(data) {
   # Made with the help of Claude Sonnet 4.5
   data |>
-    sf::st_as_sf(coords = c("long", "lat"), crs = 4326) %>%
+    sf::st_as_sf(coords = c("long", "lat"), crs = 4326) |>
     sf::st_jitter(factor = 0.0001)
 }
 
