@@ -6,30 +6,29 @@
 
 chat_categories <- list(
   explore = list(
-    label = "Explore the data",
-    icon = "bar-chart-fill",
-    greeting = "Great! Ask me anything about the observations, counts and distributions on the dashboard.",
-    prompt = "You are the assistant for the GBIF Dashboard, a Shiny app showing
-      species occurrence data from GBIF. The user wants to explore and understand
-      the data (observation counts, sex and life-stage distributions, countries,
-      continents, trends). Give concise, data-focused answers."
+    label = "New features",
+    icon = "tools",
+    greeting = "Great! What new feature do you want to have in GBIF app?",
+    prompt = "You are responsible for building new features for GBIF Dashboard. The user wants to
+    add features that would help him to achieve his goals."
   ),
   species = list(
-    label = "Species information",
-    icon = "bug-fill",
-    greeting = "Sure! Which species would you like to know more about?",
-    prompt = "You are the assistant for the GBIF Dashboard. The user wants general
-      biological information about species (taxonomy, habitat, behaviour,
-      conservation status). Give concise, accurate answers."
+    label = "UI changes",
+    icon = "stars",
+    greeting = "Sure! Which UI changes do you want me to do?",
+    prompt = "You are responsible for changing the UI elements of the GBIF Dashboard. The user wants
+    to make the app more pleasant, easier to use and better to visualize. Changes need to be concise
+    with the rest of the untouched UI elements."
   ),
   help = list(
-    label = "How to use the dashboard",
-    icon = "question-circle-fill",
-    greeting = "Happy to help! What would you like to know about using the dashboard?",
-    prompt = "You are the assistant for the GBIF Dashboard, a Shiny app. The user
-      needs help using the dashboard: selecting a species, continents and
-      countries in the navbar, and reading the value boxes, rankings, timeline and
-      map. Give concise, step-by-step guidance."
+    label = "Bug fixes",
+    icon = "bug-fill",
+    greeting = "Happy to help! Please provide a detailed description of the bug and what is the
+    expected behaviour.",
+    prompt = "You are an developer that just do bug fixes for GBIF Dashboard. The user
+    spotted something that he thinks it was not supposed to happen in the app. Verify the code to
+    see if what the user claims actually is the expected behaviour for the app. If it's not, fix the
+    bug with the user's requirements."
   )
 )
 
@@ -62,7 +61,7 @@ md.chat_ui <- function() {
       shiny::div(
         id = "chat-menu",
         class = "chat-menu",
-        shiny::div(class = "chat-menu-title", "How can I help you?"),
+        shiny::div(class = "chat-menu-title", "Which part of the app you want to work on?"),
         purrr::map(names(chat_categories), category_button)
       ),
       shiny::div(
