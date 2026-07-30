@@ -59,12 +59,81 @@ gh.open_issue <- function(title, body) {
     issue <- gh::gh(
       "POST /repos/{owner}/{repo}/issues",
       owner = gh_repo$owner, repo = gh_repo$repo,
-      title = title, body = body
+      title = title, body = body,
+      labels = list("agent-ready")
     )
-    paste0("Issue opened: ", issue$html_url)
+    list(ok = TRUE, number = issue$number, url = issue$html_url)
   }, error = function(e) {
-    paste0("Failed to open the issue: ", conditionMessage(e))
+    list(ok = FALSE, message = conditionMessage(e))
   })
+}
+
+# Bodies of every pull request linked to an issue (via the "Development"
+# section or a cross-reference). Uses GraphQL because the linkage is not
+# exposed by the REST API.
+gh.linked_pr_bodies <- function(issue_number) {
+  query <- "query($owner:String!, $name:String!, $number:Int!) {
+    repository(owner:$owner, name:$name) {
+      issue(number:$number) {
+        timelineItems(first:100, itemTypes:[CONNECTED_EVENT, CROSS_REFERENCED_EVENT]) {
+          nodes {
+            ... on ConnectedEvent { subject { ... on PullRequest { number body } } }
+            ... on CrossReferencedEvent { source { ... on PullRequest { number body } } }
+          }
+        }
+      }
+    }
+  }"
+  res <- tryCatch(
+    gh::gh_gql(query, variables = list(
+      owner = gh_repo$owner, name = gh_repo$repo, number = as.integer(issue_number)
+    )),
+    error = function(e) NULL
+  )
+  if (is.null(res)) return(character(0))
+
+  nodes <- res$data$repository$issue$timelineItems$nodes
+  bodies <- vapply(nodes, function(n) {
+    pr <- if (!is.null(n$subject)) n$subject else n$source
+    if (!is.null(pr) && !is.null(pr$body)) pr$body else NA_character_
+  }, character(1))
+  bodies[!is.na(bodies)]
+}
+
+# Extract the URL from a "Deployment link" Markdown section of a PR body.
+# Returns NA_character_ if the section or a URL inside it is not present yet.
+gh.extract_deploy_link <- function(body) {
+  if (is.null(body) || !nzchar(body)) return(NA_character_)
+  lines <- strsplit(body, "\r?\n")[[1]]
+
+  idx <- grep("deployment link", lines, ignore.case = TRUE)
+  if (length(idx) == 0) return(NA_character_)
+
+  # The section runs from its heading until the next Markdown heading.
+  start <- idx[1]
+  end <- length(lines)
+  for (i in seq_len(length(lines))[-seq_len(start)]) {
+    if (grepl("^#{1,6}\\s", lines[i])) {
+      end <- i - 1
+      break
+    }
+  }
+
+  section <- lines[start:end]
+  urls <- unlist(regmatches(section, regexpr("https?://\\S+", section, perl = TRUE)))
+  if (length(urls) == 0) return(NA_character_)
+  # Strip trailing Markdown punctuation, e.g. the ")" in [text](url).
+  sub("[).,\\]>]+$", "", urls[1], perl = TRUE)
+}
+
+# Poll helper: the deployment link from any PR linked to the issue, or NA.
+gh.deployment_link <- function(issue_number) {
+  bodies <- gh.linked_pr_bodies(issue_number)
+  for (b in rev(bodies)) {
+    link <- gh.extract_deploy_link(b)
+    if (!is.na(link)) return(link)
+  }
+  NA_character_
 }
 
 # --- ellmer tool definitions ------------------------------------------------

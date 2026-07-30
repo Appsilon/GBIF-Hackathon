@@ -48,6 +48,7 @@ md.chat_ui <- function() {
     shiny::tags$head(
       shiny::tags$link(rel = "stylesheet", type = "text/css", href = "dir/css/chatbot.css")
     ),
+    shiny::uiOutput("chat_notification"),
     shiny::tags$button(
       id = "chat-fab",
       class = "chat-fab",
@@ -124,10 +125,57 @@ chat_confirm_modal <- function(title, body) {
   )
 }
 
+# iPhone-style banner shown while the preview is being deployed.
+chat_loading <- function() {
+  shiny::div(
+    id = "chat-loading",
+    class = "chat-notif chat-loading",
+    shiny::div(class = "chat-notif-icon", shiny::div(class = "chat-spinner")),
+    shiny::div(
+      class = "chat-notif-text",
+      shiny::div(class = "chat-notif-title", "Deploying your preview…"),
+      shiny::div(class = "chat-notif-body", "This can take a few minutes — I'll let you know when it's ready.")
+    )
+  )
+}
+
+# iPhone-style notification shown when the deployment link is ready.
+# The whole banner is a link: clicking it opens the preview and dismisses it.
+chat_notification <- function(link) {
+  shiny::a(
+    id = "chat-notif",
+    class = "chat-notif",
+    href = link,
+    target = "_blank",
+    onclick = "Shiny.setInputValue('chat_notification_dismiss', Math.random(), {priority: 'event'});",
+    shiny::div(class = "chat-notif-icon", bsicons::bs_icon("rocket-takeoff-fill")),
+    shiny::div(
+      class = "chat-notif-text",
+      shiny::div(class = "chat-notif-title", "Deployment ready"),
+      shiny::div(class = "chat-notif-body", link)
+    )
+  )
+}
+
 md.chat_server <- function(input, output, session) {
   client <- shiny::reactiveVal(NULL)
   current_cat <- shiny::reactiveVal(NULL)
   staged_issue <- shiny::reactiveVal(NULL)
+  tracked_issue <- shiny::reactiveVal(NULL)
+  notification_link <- shiny::reactiveVal(NULL)
+  poll_attempts <- 0
+
+  # Top banner: a spinner while deploying, then the deployment-ready link.
+  output$chat_notification <- shiny::renderUI({
+    if (!is.null(notification_link())) return(chat_notification(notification_link()))
+    if (!is.null(tracked_issue())) return(chat_loading())
+    NULL
+  })
+
+  # The banner only disappears when the user clicks it.
+  shiny::observeEvent(input$chat_notification_dismiss, {
+    notification_link(NULL)
+  })
 
   # Called by the `propose_issue` tool: stage the issue and ask the user to
   # confirm before anything is opened on GitHub.
@@ -170,12 +218,49 @@ md.chat_server <- function(input, output, session) {
     staged_issue(NULL)
     shiny::removeModal()
     shinychat::chat_append("chat", "Opening the issue…")
-    shinychat::chat_append("chat", gh.open_issue(issue$title, issue$body))
+
+    res <- gh.open_issue(issue$title, issue$body)
+    if (isTRUE(res$ok)) {
+      shinychat::chat_append("chat", paste0(
+        "Issue opened: ", res$url,
+        "\n\nAn AI agent will now implement it and deploy a preview. ",
+        "I'll post the deployment link here as soon as it's ready…"
+      ))
+      poll_attempts <<- 0
+      tracked_issue(res$number)
+    } else {
+      shinychat::chat_append("chat", paste0("Failed to open the issue: ", res$message))
+    }
   })
 
   shiny::observeEvent(input$chat_issue_cancel, {
     staged_issue(NULL)
     shiny::removeModal()
     shinychat::chat_append("chat", "Okay, I discarded the suggestion. Let me know how you'd like to adjust it.")
+  })
+
+  # Poll the issue's linked PR until its "Deployment link" section appears.
+  shiny::observe({
+    num <- tracked_issue()
+    if (is.null(num)) return()
+
+    shiny::invalidateLater(15000)
+    poll_attempts <<- poll_attempts + 1
+
+    link <- gh.deployment_link(num)
+    if (!is.na(link)) {
+      # Stop polling until the user opens a new issue, then show the banner.
+      tracked_issue(NULL)
+      shinychat::chat_append("chat", paste0(
+        "🚀 Your suggestion has been deployed! Preview it here: ", link
+      ))
+      notification_link(link)
+    } else if (poll_attempts >= 40) {
+      tracked_issue(NULL)
+      shinychat::chat_append("chat", paste(
+        "I haven't spotted the deployment link yet — it may still be building.",
+        "Check the 'Deployment link' section of the issue's linked PR."
+      ))
+    }
   })
 }
