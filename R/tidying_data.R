@@ -97,7 +97,7 @@ tidy.map_popup <- function(data) {
       # Create unique ID for each row BEFORE glue
       popup_id = dplyr::row_number(),
       images_processed = dplyr::case_when(
-        is.na(images) | trimws(as.character(images)) == "" ~ "dir/img/gbif-mark-green-logo.png",
+        is.na(images) | trimws(as.character(images)) == "" ~ "dir/img/gbif-mark-blue-logo.png",
         .default = as.character(images)
       )
     ) |>
